@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  namespace :api do
+  scope 'api' do
     resources :career do
       resources :students
     end
@@ -17,7 +17,10 @@ Rails.application.routes.draw do
     resources :takens do
       resources :notes
     end
-    resources :notes
+    resources :notes do
+      get '/from-date/:init_date', to: 'notes#fromDate'
+      get '/of-subject/:id_subject', to: 'notes#ofSubject'
+    end
   end
 
 end

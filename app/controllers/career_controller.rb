@@ -34,7 +34,7 @@ class CareerController < ApplicationController
     if(carrer)
       career.destroy
       render json: {}, status: :no_content
-    }
+    end
   end
 
   private

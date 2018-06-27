@@ -1,5 +1,9 @@
 class Career < ApplicationRecord
   def as_json(options={})
-    super(:only => [:id,:description])
+    if(options[:only]==nil)
+      super(:only => [:id,:description])
+    else
+      super(options)
+    end
   end
 end

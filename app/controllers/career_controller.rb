@@ -1,15 +1,17 @@
 class CareerController < ApplicationController
   def index
-    @careers = Career.all
+    careers = Career.all
     respond_to do |format|
-      format.json { render json: @careers }
+      format.json { render json: careers }
     end
   end
 
   def update
-    career = Career.find(params[:id])
-    career.update(career_params)
-    redirect_to career_path(career, format: :json)
+    career = Career.find_by_id(params[:id])
+    if(career)
+      career.update(career_params)
+      redirect_to career_path(career, format: :json)
+    end
   end
 
   def create
@@ -19,16 +21,20 @@ class CareerController < ApplicationController
   end
 
   def show
-    @career = Career.find(params[:id])
-    respond_to do |format|
-      format.json { render json: @career }
+    career = Career.find_by_id(params[:id])
+    if(career)
+      respond_to do |format|
+        format.json { render json: career }
+      end
     end
   end
 
   def destroy
-    career = Career.find(params[:id])
-    career.destroy
-    render json: {}, status: :no_content
+    career = Career.find_by_id(params[:id])
+    if(carrer)
+      career.destroy
+      render json: {}, status: :no_content
+    }
   end
 
   private

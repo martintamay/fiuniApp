@@ -10,12 +10,79 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180626143743) do
+ActiveRecord::Schema.define(version: 20180627193826) do
+
+  create_table "administrators", force: :cascade do |t|
+    t.integer "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_administrators_on_person_id"
+  end
 
   create_table "careers", force: :cascade do |t|
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.string "type"
+    t.date "takenDate"
+    t.integer "score"
+    t.integer "approved"
+    t.integer "percentage"
+    t.integer "taken_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["taken_id"], name: "index_notes_on_taken_id"
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.string "names"
+    t.string "email"
+    t.string "password"
+    t.string "ci"
+    t.string "session_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "professors", force: :cascade do |t|
+    t.integer "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_professors_on_person_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.integer "entry_year"
+    t.integer "career_id"
+    t.integer "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["career_id"], name: "index_students_on_career_id"
+    t.index ["person_id"], name: "index_students_on_person_id"
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string "name"
+    t.integer "semester"
+    t.integer "professor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["professor_id"], name: "index_subjects_on_professor_id"
+  end
+
+  create_table "takens", force: :cascade do |t|
+    t.date "inscriptionDate"
+    t.integer "finished"
+    t.date "finish_date"
+    t.integer "student_id"
+    t.integer "subject_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_takens_on_student_id"
+    t.index ["subject_id"], name: "index_takens_on_subject_id"
   end
 
 end

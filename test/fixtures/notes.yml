@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 
+  takenDate: 2018-06-27
+  score: 1
+  approved: 1
+  percentage: 1
+  taken: one
+
+two:
+  type: 
+  takenDate: 2018-06-27
+  score: 1
+  approved: 1
+  percentage: 1
+  taken: two

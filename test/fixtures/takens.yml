@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  inscriptionDate: 2018-06-27
+  finished: 1
+  finish_date: 2018-06-27
+  student: one
+  subject: one
+
+two:
+  inscriptionDate: 2018-06-27
+  finished: 1
+  finish_date: 2018-06-27
+  student: two
+  subject: two

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  entry_year: 1
+  career: one
+  person: one
+
+two:
+  entry_year: 1
+  career: two
+  person: two

@@ -1,0 +1,2 @@
+class TakensController < ApplicationController
+end

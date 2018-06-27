@@ -1,6 +1,4 @@
 class CareerController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def index
     @careers = Career.all
     respond_to do |format|

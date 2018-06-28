@@ -1,25 +1,53 @@
 Rails.application.routes.draw do
   scope 'api' do
-    resources :career do
-      resources :students
+    resources :career, only: [:index,:show,:destroy,:create,:update] do
+      resources :students, only: [:index]
     end
-    resources :persons
-    resources :professors do
-      resources :subjects
+    resources :persons, only: [:index,:show,:destroy,:create,:update] do
+      collection do
+        put '/log_in', to: 'persons#logIn'
+        put '/log_out', to: 'persons#logOut'
+      end
     end
-    resources :students do
-      resources :takens
+    resources :professors, only: [:index,:show,:destroy,:create,:update] do
+      resources :subjects, only: [:index]
     end
-    resources :administrators
-    resources :subjects do
-      resources :takens
+    resources :students, only: [:index,:show,:destroy,:create,:update] do
+      get '/notes/from/:init_date/to/:end_date', to: 'students#notesBetween'
+      get '/notes/from/:init_date', to: 'students#notesFrom'
+      get '/takens/from/:init_date/to/:end_date', to: 'students#takensBetween'
+      get '/takens/from/:init_date', to: 'students#takensFrom'
+      get '/notes', to: 'students#notes'
+      get '/subjects/actives', to: 'students#activeSubjects'
+      resources :takens, only: [:index]
+      resources :subjects, only: [:index]
     end
-    resources :takens do
-      resources :notes
+    resources :administrators, only: [:index,:show,:destroy,:create,:update]
+    resources :subjects, only: [:index,:show,:destroy,:create,:update] do
+      get '/takens/from/:init_date/to/:end_date', to: 'subjects#takensBetween'
+      get '/takens/from/:init_date', to: 'subjects#takensFrom'
+      get '/notes/from/:init_date/to/:end_date', to: 'subjects#notesBetween'
+      get '/notes/from/:init_date', to: 'subjects#notesFrom'
+      get '/notes', to: 'subjects#notes'
+      get '/students', to: 'subjects#activeStudents'
+      collection do
+        get '/semester/:semester_number', to: 'subjects#fromSemester'
+      end
+      resources :takens, only: [:index]
     end
-    resources :notes do
-      get '/from-date/:init_date', to: 'notes#fromDate'
-      get '/of-subject/:id_subject', to: 'notes#ofSubject'
+    resources :takens, only: [:index,:show,:destroy,:create,:update] do
+      collection do
+        get '/from/:init_date/to/:end_date', to: 'takens#betweenDates'
+        get '/from/:init_date', to: 'takens#fromDate'
+      end
+      resources :notes, only: [:index]
+    end
+    resources :notes, only: [:index,:show,:destroy,:create,:update] do
+      collection do
+        post '/bulk-insert', to: 'notes#bulkInsert'
+        get '/from/:init_date/to/:end_date', to: 'notes#betweenDates'
+        get '/from/:init_date', to: 'notes#fromDate'
+      end
     end
   end
 

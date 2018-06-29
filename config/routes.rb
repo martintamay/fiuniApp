@@ -14,9 +14,11 @@ Rails.application.routes.draw do
     end
     resources :students, only: [:index,:show,:destroy,:create,:update] do
       get '/notes/from/:init_date/to/:end_date', to: 'students#notesBetween'
+      #este ya está el método
       get '/notes/from/:init_date', to: 'students#notesFrom'
       get '/takens/from/:init_date/to/:end_date', to: 'students#takensBetween'
       get '/takens/from/:init_date', to: 'students#takensFrom'
+      #este
       get '/notes', to: 'students#notes'
       get '/subjects/actives', to: 'students#activeSubjects'
       resources :takens, only: [:index]
@@ -27,8 +29,10 @@ Rails.application.routes.draw do
       get '/takens/from/:init_date/to/:end_date', to: 'subjects#takensBetween'
       get '/takens/from/:init_date', to: 'subjects#takensFrom'
       get '/notes/from/:init_date/to/:end_date', to: 'subjects#notesBetween'
+      #este
       get '/notes/from/:init_date', to: 'subjects#notesFrom'
       get '/notes', to: 'subjects#notes'
+      #este
       get '/students', to: 'subjects#activeStudents'
       collection do
         get '/semester/:semester_number', to: 'subjects#fromSemester'
@@ -44,11 +48,11 @@ Rails.application.routes.draw do
     end
     resources :notes, only: [:index,:show,:destroy,:create,:update] do
       collection do
+        #este
         post '/bulk-insert', to: 'notes#bulkInsert'
         get '/from/:init_date/to/:end_date', to: 'notes#betweenDates'
         get '/from/:init_date', to: 'notes#fromDate'
       end
     end
   end
-
 end

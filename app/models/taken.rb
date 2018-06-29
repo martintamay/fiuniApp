@@ -1,6 +1,7 @@
 class Taken < ApplicationRecord
   belongs_to :student
   belongs_to :subject
+  has_many :notes
 
   def as_json(options={})
     if(options[:only]==nil)

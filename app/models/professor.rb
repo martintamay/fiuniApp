@@ -4,7 +4,7 @@ class Professor < ApplicationRecord
 
   def as_json(options={})
     if(options[:only]==nil)
-      super(:only => [:id,:person])
+      super(:only => [:id], include: {person: {only: [:names, :email, :ci]}})
     else
       super(options)
     end

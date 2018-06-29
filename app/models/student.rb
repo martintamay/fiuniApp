@@ -6,7 +6,7 @@ class Student < ApplicationRecord
 
   def as_json(options={})
     if(options[:only]==nil)
-      super(:only => [:id,:person,:entry_year,:career])
+      super(:only => [:id,:entry_year], include: {career: {only: [:description]}, person: {only: [:names, :email, :ci]}} )
     else
       super(options)
     end

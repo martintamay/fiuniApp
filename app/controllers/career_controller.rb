@@ -31,7 +31,7 @@ class CareerController < ApplicationController
 
   def destroy
     career = Career.find_by_id(params[:id])
-    if(carrer)
+    if(career)
       career.destroy
       render json: {}, status: :no_content
     end

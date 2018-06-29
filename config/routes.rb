@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resources :career, only: [:index,:show,:destroy,:create,:update] do
       resources :students, only: [:index]
     end
-    resources :persons, only: [:index,:show,:destroy,:create,:update] do
+    resources :people, only: [:index,:show,:destroy,:create,:update] do
       collection do
         put '/log_in', to: 'persons#logIn'
         put '/log_out', to: 'persons#logOut'

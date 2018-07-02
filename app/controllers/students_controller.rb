@@ -1,8 +1,33 @@
 class StudentsController < ApplicationController
   def index
     students = Student.all
-    respond_to do |format|
-      format.json { render json: students }
+    render json: students 
+  end
+
+  def logIn
+    datos = params.require(:student).permit(:email,:password)
+    student = Student.all.take
+    user = student.login(datos[:email], datos[:password])
+    if user
+      render json: user.as_json(:only => [:id,:entry_year], \
+        include: {
+          person: { :only => [:email,:ci,:names,:session_token] },
+          career: { :only => [:id,:description] }
+        })
+    else
+      render json: { "error" => "incorrect user" }, status: :unauthorized
+    end
+  end
+
+  def notes
+    student = Student.find_by_id(params[:student_id])
+    if(student)
+      render json: student.notes.as_json({
+        :only => [:id,:opportunity,:takenDate,:score,:percentage,:noteType],
+        include: { taken: { only: [:subject_id]}}
+      })
+    else
+      render json: { "error" => "student not found" }, status: :not_found
     end
   end
 

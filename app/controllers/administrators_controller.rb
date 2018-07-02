@@ -1,9 +1,7 @@
 class AdministratorsController < ApplicationController
   def index
     administradors = Administrator.all
-    respond_to do |format|
-      format.json { render json: administradors }
-    end
+    render json: administradors
   end
 
   def update

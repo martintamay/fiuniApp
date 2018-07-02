@@ -1,9 +1,7 @@
 class CareerController < ApplicationController
   def index
     careers = Career.all
-    respond_to do |format|
-      format.json { render json: careers }
-    end
+    render json: careers
   end
 
   def update

@@ -3,7 +3,7 @@ class Note < ApplicationRecord
 
   def as_json(options={})
     if(options[:only]==nil)
-      super(:only => [:id,:type,:takenDate,:score,:taken,:percentage])
+      super(:only => [:id,:type,:opportunity,:takenDate,:score,:taken,:percentage])
     else
       super(options)
     end

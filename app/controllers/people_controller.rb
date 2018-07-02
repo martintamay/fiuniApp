@@ -1,9 +1,7 @@
 class PeopleController < ApplicationController
   def index
     people = Person.all
-    respond_to do |format|
-      format.json { render json: people }
-    end
+    render json: people
   end
 
   def update
@@ -12,6 +10,20 @@ class PeopleController < ApplicationController
       person.update(person_params)
       redirect_to person_path(person, format: :json)
     end
+  end
+
+  def logIn
+      datos = params.require(:person).permit(:email,:password)
+      person = Person.all.take
+      person = person.login(datos[:email], datos[:password])
+      if person
+        render json: person.as_json({
+          :only => [:id,:names,:email,:session_token,:ci],
+          methods: [:student,:professor,:administrator]
+        })
+      else
+        render json: { "error" => "incorrect user" }, status: :unauthorized
+      end
   end
 
   def create

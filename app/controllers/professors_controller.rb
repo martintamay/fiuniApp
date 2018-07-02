@@ -1,9 +1,7 @@
 class ProfessorsController < ApplicationController
   def index
     professors = Professor.all
-    respond_to do |format|
-      format.json { render json: professors }
-    end
+    render json: professors
   end
 
   def update

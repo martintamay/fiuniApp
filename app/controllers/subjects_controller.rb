@@ -1,9 +1,7 @@
 class SubjectsController < ApplicationController
   def index
     subjects = Subject.all
-    respond_to do |format|
-      format.json { render json: subjetcs }
-    end
+    render json: subjects
   end
 
   def update

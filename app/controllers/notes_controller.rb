@@ -1,9 +1,7 @@
 class NotesController < ApplicationController
   def index
     notas = Note.all
-    respond_to do |format|
-      format.json { render json: notas }
-    end
+    render json: notas
   end
 
   def update

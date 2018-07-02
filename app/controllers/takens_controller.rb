@@ -1,9 +1,7 @@
 class TakensController < ApplicationController
   def index
     takens = Taken.all
-    respond_to do |format|
-      format.json { render json: takens }
-    end
+    render json: takens
   end
 
   def update

@@ -52,6 +52,9 @@ Rails.application.routes.draw do
         post '/bulk-insert', to: 'notes#bulkInsert'
         get '/from/:init_date/to/:end_date', to: 'notes#betweenDates'
         get '/from/:init_date', to: 'notes#fromDate'
+        get '/to-approve/academic', to: 'notes#toAproveAcademic'
+        get '/to-approve/secretary', to: 'notes#toAproveSecretary'
+        get '/to-approve', to: 'notes#toAprove'
       end
     end
   end

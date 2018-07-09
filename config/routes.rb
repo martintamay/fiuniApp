@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         #este
         put '/log_in', to: 'people#logIn'
         put '/log_out', to: 'people#logOut'
+        put '/relogin', to: 'people#reLogIn'
       end
     end
     resources :professors, only: [:index,:show,:destroy,:create,:update] do

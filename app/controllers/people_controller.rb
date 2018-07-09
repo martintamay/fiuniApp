@@ -26,6 +26,20 @@ class PeopleController < ApplicationController
       end
   end
 
+  def reLogIn
+      datos = params.require(:person).permit(:session_token)
+      person = Person.where(session_token: datos[:session_token])
+      person = person.login(person.email, person.password)
+      if person
+        render json: person.as_json({
+          :only => [:id,:names,:email,:session_token,:ci],
+          methods: [:student,:professor,:administrator]
+        })
+      else
+        render json: { "error" => "incorrect user" }, status: :unauthorized
+      end
+  end
+
   def create
     person = Person.new(person_params)
     person.save

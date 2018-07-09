@@ -28,15 +28,15 @@ class PeopleController < ApplicationController
 
   def reLogIn
       datos = params.require(:person).permit(:session_token)
-      person = Person.where(session_token: datos[:session_token])
-      person = person.login(person.email, person.password)
+      person = Person.where(session_token: datos[:session_token]).take
       if person
+        person = person.login(person.email, person.password)
         render json: person.as_json({
           :only => [:id,:names,:email,:session_token,:ci],
           methods: [:student,:professor,:administrator]
         })
       else
-        render json: { "error" => "incorrect user" }, status: :unauthorized
+        render json: { "error" => "incorrect session token" }, status: :unauthorized
       end
   end
 

@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  root to: "app_react#index"
+  get 'app_react/index'
+
   scope 'api' do
     resources :career, only: [:index,:show,:destroy,:create,:update] do
       resources :students, only: [:index]

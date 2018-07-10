@@ -1,5 +1,5 @@
 class Subject < ApplicationRecord
-  belongs_to :professor
+  belongs_to :professor, optional: true
 
   def as_json(options={})
     if(options[:only]==nil)

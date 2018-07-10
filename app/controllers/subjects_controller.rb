@@ -13,7 +13,7 @@ class SubjectsController < ApplicationController
   end
 
   def create
-    subject = Subject.new(career_params)
+    subject = Subject.new(subject_params)
     subject.save
     redirect_to subject_path(subject, format: :json)
   end
@@ -37,6 +37,6 @@ class SubjectsController < ApplicationController
 
   private
     def subject_params
-      params.require(:subject).permit(:description)
+      params.require(:subject).permit(:name, :semester, :professor_id)
     end
 end

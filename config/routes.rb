@@ -73,4 +73,6 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  get '/:path', to: 'app_react#index'
 end

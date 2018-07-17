@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
   def index
     students = Student.all
-    render json: students 
+    render json: students
   end
 
   def logIn
@@ -48,9 +48,7 @@ class StudentsController < ApplicationController
   def show
     student = Student.find_by_id(params[:id])
     if(student)
-      respond_to do |format|
-        format.json { render json: student }
-      end
+      render json: student
     end
   end
 
@@ -59,6 +57,13 @@ class StudentsController < ApplicationController
     if(student)
       student.destroy
       render json: {}, status: :no_content
+    end
+  end
+
+  def subjects
+    student = Student.find_by_id(params[:student_id])
+    if(student)
+      render json: student.subjects
     end
   end
 

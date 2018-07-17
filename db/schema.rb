@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180702031336) do
+ActiveRecord::Schema.define(version: 20180710195648) do
 
   create_table "administrators", force: :cascade do |t|
     t.integer "person_id"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20180702031336) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "opportunity"
+    t.integer "checked"
     t.index ["taken_id"], name: "index_notes_on_taken_id"
   end
 

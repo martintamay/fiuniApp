@@ -35,6 +35,10 @@ class NotesController < ApplicationController
     end
   end
 
+  def bulkCheck
+    //todo: check the notes in the list
+  end
+
   private
     def nota_params
       params.require(:nota).permit(:description)

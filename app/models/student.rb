@@ -26,6 +26,15 @@ class Student < ApplicationRecord
     return notas
   end
 
+  def subjects
+    takens = self.takens
+    materias = []
+    takens.each do |taken|
+      materias.push(taken.subject)
+    end
+    return materias
+  end
+
   def notesFrom(initDate)
     takens = self.takens
     notas = []

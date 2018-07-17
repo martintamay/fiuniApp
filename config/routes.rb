@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       #este ya está el método
       get '/notes', to: 'students#notes'
       get '/subjects/actives', to: 'students#activeSubjects'
+      get '/subjects', to: 'students#subjects'
       #este
       #get '/subjects', to: 'students#subjects'
 
@@ -34,10 +35,7 @@ Rails.application.routes.draw do
         put '/log_in', to: 'students#logIn'
         put '/log_out', to: 'students#logOut'
       end
-      resources :takens, only: [:index] do
-        resources :subjects, only: [:index]
-      end
-      resources :subjects, only: [:index]
+      resources :takens, only: [:index]
     end
     resources :administrators, only: [:index,:show,:destroy,:create,:update]
     resources :subjects, only: [:index,:show,:destroy,:create,:update] do

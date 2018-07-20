@@ -17,21 +17,15 @@ class Person < ApplicationRecord
     st = Student.where("person_id = ?", self.id).take
     st.as_json :only => [:id,:entry_year]
   end
+  
   def professor
     pr = Professor.where("person_id = ?", self.id).take
     pr.as_json :only => [:id,:entry_year]
   end
+
   def administrator
     ad = Administrator.where("person_id = ?", self.id).take
     ad.as_json :only => [:id,:entry_year]
-  end
-
-  def login(email, password)
-    person  = Person.where("email = ? AND password = ?", email, password).take
-    if person
-      person.generateSessionToken()
-    end
-    return person
   end
 
   def generateSessionToken
@@ -40,5 +34,14 @@ class Person < ApplicationRecord
     email = self.email
     self.session_token = Digest::SHA1.hexdigest date+password+email+SecureRandom.hex
     self.save
+  end
+
+  #class methods
+  def self.login(email, password)
+    person  = Person.where("email = ? AND password = ?", email, password).take
+    if person
+      person.generateSessionToken()
+    end
+    return person
   end
 end

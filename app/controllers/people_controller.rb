@@ -12,7 +12,7 @@ class PeopleController < ApplicationController
     if @person.save
       render json: @person, status: :created, location: @person
     else
-      render json: @v.errors, status: :unprocessable_entity
+      render json: @person.errors, status: :unprocessable_entity
     end
   end
 
@@ -34,8 +34,7 @@ class PeopleController < ApplicationController
 
   def logIn
       datos = params.require(:person).permit(:email,:password)
-      person = Person.all.take
-      person = person.login(datos[:email], datos[:password])
+      person = Person.login(datos[:email], datos[:password])
       if person
         render json: person.as_json({
           :only => [:id,:names,:email,:session_token,:ci],

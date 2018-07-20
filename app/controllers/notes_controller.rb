@@ -16,6 +16,11 @@ class NotesController < ApplicationController
 
   def create
     @nota = Note.new(nota_params)
+    #se setea la oportunidad la correcta
+    #y el checked a 0
+    takenNotes = @nota.taken.notes.where(noteType: @nota.noteType)
+    @nota.opportunity = takenNotes.maximum('opportunity')+1
+    @nota.checked = 0
 
     if @nota.save
       render json: @nota, status: :created, location: @nota
@@ -32,8 +37,39 @@ class NotesController < ApplicationController
     @nota.destroy
   end
 
+
   def bulkCheck
-    #todo: check the notes in the list
+    updatedNotes = []
+    Note.transaction do
+      params.require(:notes).each do |note|
+        datos = note.permit(:id,:checked)
+        @nota = Note.find(datos[:id])
+        #se setea el checked
+        @nota.checked = datos[:checked]
+        #se guarda
+        @nota.save!
+        updatedNotes.push @nota
+      end
+    end
+    render json: updatedNotes
+  end
+
+  def bulkInsert
+    insertedNotes = []
+    Note.transaction do
+      params.require(:notes).each do |note|
+        @nota = Note.new(note.permit(:noteType,:takenDate,:score,:approved,:percentage,:taken_id))
+        #se setea la oportunidad la correcta
+        #y el checked a 0
+        lastOpportunity = @nota.taken.notes.where(noteType: @nota.noteType).maximum('opportunity')
+        @nota.opportunity = lastOpportunity ? lastOpportunity+1 : 1
+        @nota.checked = 0
+        #se guarda
+        @nota.save!
+        insertedNotes.push @nota
+      end
+    end
+    render json: insertedNotes
   end
 
   private
@@ -42,6 +78,6 @@ class NotesController < ApplicationController
     end
 
     def nota_params
-      params.require(:nota).permit(:description)
+      params.require(:note).permit(:noteType,:takenDate,:score,:approved,:percentage,:taken_id)
     end
 end

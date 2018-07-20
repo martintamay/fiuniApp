@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_action :set_student, only: [:show, :update, :destroy, :notes, :subjects]
+  before_action :set_student, only: [:show, :update, :destroy, :notes, :subjects, :lastNotes]
 
   def index
     students = Student.all
@@ -32,10 +32,26 @@ class StudentsController < ApplicationController
     @student.destroy
   end
 
+  def subjects
+    render json: @student.subjects
+  end
+
+  def lastNotes
+    lastDate = params[:last_date]
+    lastDate += " "+params[:last_time].gsub('-', ':')
+
+    takens = @student.takens
+    @notes = []
+    takens.each do |taken|
+      @notes.concat(taken.notes.where("checked = 1 AND updated_at >= :last_date", :last_date => lastDate))
+    end
+
+    render json: @notes
+  end
+
   def logIn
     datos = params.require(:student).permit(:email,:password)
-    student = Student.all.take
-    user = student.login(datos[:email], datos[:password])
+    user = Student.login(datos[:email], datos[:password])
     if user
       render json: user.as_json(:only => [:id,:entry_year], \
         include: {
@@ -48,28 +64,18 @@ class StudentsController < ApplicationController
   end
 
   def notes
-    if(@student)
-      render json: @student.notes.as_json({
-        :only => [:id,:opportunity,:takenDate,:score,:percentage,:noteType],
-        include: { taken: { only: [:subject_id]}}
-      })
-    else
-      render json: { "error" => "student not found" }, status: :not_found
-    end
-  end
-
-  def subjects
-    if(@student)
-      render json: @student.subjects
-    end
+    render json: @student.notes.as_json({
+      :only => [:id,:opportunity,:takenDate,:score,:percentage,:noteType],
+      include: { taken: { only: [:subject_id]}}
+    })
   end
 
   private
     def set_student
       if params[:id]
-        @movement = Student.find(params[:id])
+        @student = Student.find(params[:id])
       else
-        @movement = Student.find(params[:student_id])
+        @student = Student.find(params[:student_id])
       end
     end
 

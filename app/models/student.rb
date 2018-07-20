@@ -45,7 +45,7 @@ class Student < ApplicationRecord
   end
 
   #métodos de clase
-  def login(email, password)
+  def self.login(email, password)
     student  = Student.joins(:person).where("email = ? AND password = ?", email, password).take
     if student
       student.person.generateSessionToken()

@@ -36,7 +36,7 @@ class NotesController < ApplicationController
   end
 
   def bulkCheck
-    //todo: check the notes in the list
+    #todo: check the notes in the list
   end
 
   private

@@ -1,38 +1,35 @@
 class NotesController < ApplicationController
+  before_action :set_note, only: [:show, :update, :destroy]
+
   def index
     notas = Note.all
     render json: notas
   end
 
   def update
-    nota = Note.find_by_id(params[:id])
-    if(nota)
-      nota.update(nota_params)
-      redirect_to nota_path(nota, format: :json)
+    if @nota.update(nota_params)
+      render json: @nota
+    else
+      render json: @nota.errors, status: :unprocessable_entity
     end
   end
 
   def create
-    nota = Note.new(nota_params)
-    nota.save
-    redirect_to nota_path(nota, format: :json)
+    @nota = Note.new(nota_params)
+
+    if @nota.save
+      render json: @nota, status: :created, location: @nota
+    else
+      render json: @nota.errors, status: :unprocessable_entity
+    end
   end
 
   def show
-    nota = Note.find_by_id(params[:id])
-    if(nota)
-      respond_to do |format|
-        format.json { render json: notal }
-      end
-    end
+    render json: @nota
   end
 
   def destroy
-    nota = Note.find_by_id(params[:id])
-    if(nota)
-      nota.destroy
-      render json: {}, status: :no_content
-    end
+    @nota.destroy
   end
 
   def bulkCheck
@@ -40,6 +37,10 @@ class NotesController < ApplicationController
   end
 
   private
+    def set_note
+       @nota = Note.find(params[:id])
+    end
+
     def nota_params
       params.require(:nota).permit(:description)
     end

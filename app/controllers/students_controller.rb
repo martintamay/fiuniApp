@@ -1,7 +1,35 @@
 class StudentsController < ApplicationController
+  before_action :set_student, only: [:show, :update, :destroy, :notes, :subjects]
+
   def index
     students = Student.all
     render json: students
+  end
+
+  def update
+    if @student.update(student_params)
+      render json: @student
+    else
+      render json: @student.errors, status: :unprocessable_entity
+    end
+  end
+
+  def create
+    @student = Student.new(student_params)
+
+    if @student.save
+      render json: @student, status: :created, location: @student
+    else
+      render json: @student.errors, status: :unprocessable_entity
+    end
+  end
+
+  def show
+    render json: @student
+  end
+
+  def destroy
+    @student.destroy
   end
 
   def logIn
@@ -20,9 +48,8 @@ class StudentsController < ApplicationController
   end
 
   def notes
-    student = Student.find_by_id(params[:student_id])
-    if(student)
-      render json: student.notes.as_json({
+    if(@student)
+      render json: @student.notes.as_json({
         :only => [:id,:opportunity,:takenDate,:score,:percentage,:noteType],
         include: { taken: { only: [:subject_id]}}
       })
@@ -31,43 +58,21 @@ class StudentsController < ApplicationController
     end
   end
 
-  def update
-    student = Student.find_by_id(params[:id])
-    if(student)
-      student.update(student_params)
-      redirect_to student_path(student, format: :json)
-    end
-  end
-
-  def create
-    student = Student.new(student_params)
-    student.save
-    redirect_to student_path(student, format: :json)
-  end
-
-  def show
-    student = Student.find_by_id(params[:id])
-    if(student)
-      render json: student
-    end
-  end
-
-  def destroy
-    student = Student.find_by_id(params[:id])
-    if(student)
-      student.destroy
-      render json: {}, status: :no_content
-    end
-  end
-
   def subjects
-    student = Student.find_by_id(params[:student_id])
-    if(student)
-      render json: student.subjects
+    if(@student)
+      render json: @student.subjects
     end
   end
 
   private
+    def set_student
+      if params[:id]
+        @movement = Student.find(params[:id])
+      else
+        @movement = Student.find(params[:student_id])
+      end
+    end
+
     def student_params
       params.require(:student).permit(:person_id,:entry_year,:career_id)
     end

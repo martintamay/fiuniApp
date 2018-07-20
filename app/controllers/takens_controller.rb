@@ -1,41 +1,42 @@
 class TakensController < ApplicationController
+  before_action :set_taken, only: [:show, :update, :destroy]
+
   def index
     takens = Taken.all
     render json: takens
   end
 
   def update
-    taken = Taken.find_by_id(params[:id])
-    if(taken)
-      taken.update(taken_params)
-      redirect_to taken_path(taken, format: :json)
+    if @taken.update(taken_params)
+      render json: @taken
+    else
+      render json: @taken.errors, status: :unprocessable_entity
     end
   end
 
   def create
-    taken = Taken.new(career_params)
-    taken.save
-    redirect_to taken_path(taken, format: :json)
+    @taken = Taken.new(taken_params)
+
+    if @taken.save
+      render json: @taken, status: :created, location: @taken
+    else
+      render json: @taken.errors, status: :unprocessable_entity
+    end
   end
 
   def show
-    taken = Taken.find_by_id(params[:id])
-    if(taken)
-      respond_to do |format|
-        format.json { render json: taken }
-      end
-    end
+    render json: @taken
   end
 
   def destroy
-    taken = Taken.find_by_id(params[:id])
-    if(taken)
-      taken.destroy
-      render json: {}, status: :no_content
-    end
+    @taken.destroy
   end
 
   private
+    def set_taken
+      @taken = Taken.find(params[:id])
+    end
+
     def career_params
       params.require(:taken).permit(:description)
     end

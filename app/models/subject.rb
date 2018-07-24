@@ -3,11 +3,25 @@ class Subject < ApplicationRecord
   has_many :takens
 
   def as_json(options={})
-    if(options[:only]==nil)
-      super(:only => [:id,:name,:semester,:profesor])
-    else
-      super(options)
+    #si no especificó un only se usa el siguiente
+    if(!options[:only])
+      options[:only] = [:id,:name,:semester]
     end
+    if(!options[:include])
+      options[:include] = [
+        professor: {
+          only: :id,
+          include: {
+            person: {
+              only: [:id,:names]
+            }
+          }
+        }
+      ]
+    end
+
+    #se genera el json
+    super(options)
   end
 
   def notes
@@ -19,4 +33,7 @@ class Subject < ApplicationRecord
       ).merge({ "notes" => taken.notes.as_json})
     end
   end
+
+  #SCOPES
+  #scope :uncheckeds => Note.joins(:taken).where(checked: 0).group("takens.subject_id")
 end

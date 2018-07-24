@@ -171,79 +171,115 @@ takens = Taken.create([
     subject: subjects[4]
   }
 ])
-notes = Note.create([
+examinations = Examination.create([
   #pp
   {
-    noteType: "PP",
-    takenDate: "2014-12-01",
-    score: "4",
-    approved: 1,
-    percentage: 83,
-    opportunity: 1,
-    taken: takens[0]
+    examination_date: "2014-12-01",
+    examination_type: "PP",
+    subject: takens[0].subject
   },
   {
-    noteType: "PP",
-    takenDate: "2014-12-01",
-    score: "3",
-    approved: 1,
-    percentage: 73,
-    opportunity: 1,
-    taken: takens[1]
+    examination_date: "2014-12-01",
+    examination_type: "PP",
+    subject: takens[1].subject
   },
   {
-    noteType: "PP",
-    takenDate: "2013-12-01",
-    score: "5",
-    approved: 1,
-    percentage: 98,
-    opportunity: 1,
-    taken: takens[4]
+    examination_date: "2013-12-01",
+    examination_type: "PP",
+    subject: takens[4].subject
   },
   {
-    noteType: "PP",
-    takenDate: "2013-12-01",
-    score: "5",
-    approved: 1,
-    percentage: 100,
-    opportunity: 1,
-    taken: takens[5]
+    examination_date: "2013-12-01",
+    examination_type: "PP",
+    subject: takens[5].subject
   },
   #finales
   {
-    noteType: "Final",
-    takenDate: "2014-12-23",
+    examination_date: "2014-12-23",
+    examination_type: "Final",
+    subject: takens[0].subject
+  },
+  {
+    examination_date: "2014-12-20",
+    examination_type: "Final",
+    subject: takens[1].subject
+  },
+  {
+    examination_date: "2013-12-15",
+    examination_type: "Final",
+    subject: takens[4].subject
+  },
+  {
+    examination_date: "2013-12-20",
+    examination_type: "Final",
+    subject: takens[5].subject
+  }
+])
+notes = Note.create([
+  #pp
+  {
     score: "4",
     approved: 1,
     percentage: 83,
     opportunity: 1,
-    taken: takens[0]
+    taken: takens[0],
+    examination: examinations[0]
   },
   {
-    noteType: "Final",
-    takenDate: "2014-12-20",
     score: "3",
     approved: 1,
     percentage: 73,
     opportunity: 1,
-    taken: takens[1]
+    taken: takens[1],
+    examination: examinations[1]
   },
   {
-    noteType: "Final",
-    takenDate: "2013-12-15",
     score: "5",
     approved: 1,
     percentage: 98,
     opportunity: 1,
-    taken: takens[4]
+    taken: takens[4],
+    examination: examinations[2]
   },
   {
-    noteType: "Final",
-    takenDate: "2013-12-20",
     score: "5",
     approved: 1,
     percentage: 100,
     opportunity: 1,
-    taken: takens[5]
+    taken: takens[5],
+    examination: examinations[3]
+  },
+  #finales
+  {
+    score: "4",
+    approved: 1,
+    percentage: 83,
+    opportunity: 1,
+    taken: takens[0],
+    examination: examinations[4]
+  },
+  {
+    score: "3",
+    approved: 1,
+    percentage: 73,
+    opportunity: 1,
+    taken: takens[1],
+    examination: examinations[5]
+  },
+  {
+    score: "5",
+    approved: 1,
+    percentage: 98,
+    opportunity: 1,
+    taken: takens[4],
+    examination: examinations[6]
+  },
+  {
+    score: "5",
+    approved: 1,
+    percentage: 100,
+    opportunity: 1,
+    taken: takens[5],
+    examination: examinations[7]
   }
 ])

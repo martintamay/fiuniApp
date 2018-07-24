@@ -16,11 +16,6 @@ class NotesController < ApplicationController
 
   def create
     @nota = Note.new(nota_params)
-    #se setea la oportunidad la correcta
-    #y el checked a 0
-    takenNotes = @nota.taken.notes.where(noteType: @nota.noteType)
-    @nota.opportunity = takenNotes.maximum('opportunity')+1
-    @nota.checked = 0
 
     if @nota.save
       render json: @nota, status: :created, location: @nota
@@ -58,13 +53,7 @@ class NotesController < ApplicationController
     insertedNotes = []
     Note.transaction do
       params.require(:notes).each do |note|
-        @nota = Note.new(note.permit(:noteType,:takenDate,:score,:approved,:percentage,:taken_id))
-        #se setea la oportunidad la correcta
-        #y el checked a 0
-        lastOpportunity = @nota.taken.notes.where(noteType: @nota.noteType).maximum('opportunity')
-        @nota.opportunity = lastOpportunity ? lastOpportunity+1 : 1
-        @nota.checked = 0
-        #se guarda
+        @nota = Note.new(note.permit(:score,:approved,:percentage,:taken_id))
         @nota.save!
         insertedNotes.push @nota
       end
@@ -78,6 +67,6 @@ class NotesController < ApplicationController
     end
 
     def nota_params
-      params.require(:note).permit(:noteType,:takenDate,:score,:approved,:percentage,:taken_id)
+      params.require(:note).permit(:score,:approved,:percentage,:taken_id)
     end
 end

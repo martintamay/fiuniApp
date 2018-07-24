@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180710195648) do
+ActiveRecord::Schema.define(version: 20180721043319) do
 
   create_table "administrators", force: :cascade do |t|
     t.integer "person_id"
@@ -25,9 +25,16 @@ ActiveRecord::Schema.define(version: 20180710195648) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "examinations", force: :cascade do |t|
+    t.string "examination_type"
+    t.date "examination_date"
+    t.integer "subject_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subject_id"], name: "index_examinations_on_subject_id"
+  end
+
   create_table "notes", force: :cascade do |t|
-    t.string "noteType"
-    t.date "takenDate"
     t.integer "score"
     t.integer "approved"
     t.integer "percentage"
@@ -36,6 +43,8 @@ ActiveRecord::Schema.define(version: 20180710195648) do
     t.datetime "updated_at", null: false
     t.integer "opportunity"
     t.integer "checked"
+    t.integer "examination_id"
+    t.index ["examination_id"], name: "index_notes_on_examination_id"
     t.index ["taken_id"], name: "index_notes_on_taken_id"
   end
 

@@ -1,21 +1,40 @@
 class PeopleController < ApplicationController
+  before_action :set_person, only: [:show, :update, :destroy]
+
   def index
     people = Person.all
     render json: people
   end
 
-  def update
-    person = Person.find_by_id(params[:id])
-    if(person)
-      person.update(person_params)
-      redirect_to person_path(person, format: :json)
+  def create
+    @person = Person.new(person_params)
+
+    if @person.save
+      render json: @person, status: :created, location: @person
+    else
+      render json: @person.errors, status: :unprocessable_entity
     end
+  end
+
+  def update
+    if @person.update(person_params)
+      render json: @person
+    else
+      render json: @person.errors, status: :unprocessable_entity
+    end
+  end
+
+  def show
+    render json: @person
+  end
+
+  def destroy
+    @person.destroy
   end
 
   def logIn
       datos = params.require(:person).permit(:email,:password)
-      person = Person.all.take
-      person = person.login(datos[:email], datos[:password])
+      person = Person.login(datos[:email], datos[:password])
       if person
         render json: person.as_json({
           :only => [:id,:names,:email,:session_token,:ci],
@@ -28,9 +47,8 @@ class PeopleController < ApplicationController
 
   def reLogIn
       datos = params.require(:person).permit(:session_token)
-      person = Person.where(session_token: datos[:session_token]).take
+      person = Person.relogin(datos[:session_token])
       if person
-        person = person.login(person.email, person.password)
         render json: person.as_json({
           :only => [:id,:names,:email,:session_token,:ci],
           methods: [:student,:professor,:administrator]
@@ -40,30 +58,11 @@ class PeopleController < ApplicationController
       end
   end
 
-  def create
-    person = Person.new(person_params)
-    person.save
-    redirect_to person_path(person, format: :json)
-  end
-
-  def show
-    person = Person.find_by_id(params[:id])
-    if(person)
-      respond_to do |format|
-        format.json { render json: person }
-      end
-    end
-  end
-
-  def destroy
-    person = Person.find_by_id(params[:id])
-    if(person)
-      person.destroy
-      render json: {}, status: :no_content
-    end
-  end
-
   private
+    def set_person
+      @person = Person.find(params[:id])
+    end
+
     def person_params
       params.require(:person).permit(:names, :email, :password, :ci)
     end

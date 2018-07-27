@@ -87,27 +87,33 @@ subjects = Subject.create([
   {
     name: "Física 1",
     semester: 1,
-    professor: professors[0]
+    professor: professors[0],
+    career: careers[0]
   },{
     name: "Física 2",
     semester: 1,
-    professor: professors[0]
+    professor: professors[0],
+    career: careers[0]
   },{
     name: "Física 3",
     semester: 1,
-    professor: professors[0]
+    professor: professors[0],
+    career: careers[0]
   },{
     name: "Análisis 1",
     semester: 1,
-    professor: professors[1]
+    professor: professors[1],
+    career: careers[0]
   },{
     name: "Análisis 2",
     semester: 1,
-    professor: professors[1]
+    professor: professors[1],
+    career: careers[0]
   },{
     name: "Análisis 3",
     semester: 1,
-    professor: professors[1]
+    professor: professors[1],
+    career: careers[0]
   }
 ])
 

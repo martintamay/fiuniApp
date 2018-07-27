@@ -47,9 +47,8 @@ class PeopleController < ApplicationController
 
   def reLogIn
       datos = params.require(:person).permit(:session_token)
-      person = Person.where(session_token: datos[:session_token]).take
+      person = Person.relogin(datos[:session_token])
       if person
-        person = Person.login(person.email, person.password)
         render json: person.as_json({
           :only => [:id,:names,:email,:session_token,:ci],
           methods: [:student,:professor,:administrator]

@@ -1,5 +1,5 @@
 class Examination < ApplicationRecord
-  belongs_to :subject
+  belongs_to :subject, optional: false
   has_many :notes
 
   def as_json(options={})

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "app_react#index"
+  root to: 'app_react#index'
   get 'app_react/index'
 
   scope 'api' do

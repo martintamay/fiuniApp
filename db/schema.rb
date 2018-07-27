@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180721043319) do
+ActiveRecord::Schema.define(version: 20180727200021) do
 
   create_table "administrators", force: :cascade do |t|
     t.integer "person_id"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20180721043319) do
     t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "android_session_token"
     t.index ["career_id"], name: "index_students_on_career_id"
     t.index ["person_id"], name: "index_students_on_person_id"
   end
@@ -81,6 +82,8 @@ ActiveRecord::Schema.define(version: 20180721043319) do
     t.integer "professor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "career_id"
+    t.index ["career_id"], name: "index_subjects_on_career_id"
     t.index ["professor_id"], name: "index_subjects_on_professor_id"
   end
 

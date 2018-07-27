@@ -26,6 +26,15 @@ class Student < ApplicationRecord
     return notas
   end
 
+  def currentSubjects
+    takens = self.takens.where(finished: 0)
+    materias = []
+    takens.each do |taken|
+      materias.push(taken.subject)
+    end
+    return materias
+  end
+
   def subjects
     takens = self.takens
     materias = []
@@ -44,11 +53,19 @@ class Student < ApplicationRecord
     return notas
   end
 
+  def generateSessionToken
+    date = Time.now.strftime("%d%m%Y%R")
+    password = self.person.password
+    email = self.person.email
+    self.android_session_token = Digest::SHA1.hexdigest date+password+email+SecureRandom.hex
+    self.save
+  end
+
   #métodos de clase
   def self.login(email, password)
-    student  = Student.joins(:person).where("email = ? AND password = ?", email, password).take
+    student  = Student.joins(:person).where("email = ? AND password = ?", email, Digest::SHA1.hexdigest(password)).take
     if student
-      student.person.generateSessionToken()
+      student.generateSessionToken()
     end
     return student
   end

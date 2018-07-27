@@ -17,11 +17,19 @@ class StudentsController < ApplicationController
   def create
     @student = Student.new(student_params)
 
-    if @student.save
+    Student.transaction do
+      #se crea la persona de ser necesaria, si no se la busca
+      if params[:student][:person]
+        @student.person = Person.create(params.require(:student).require(:person).permit(:names,:email,:password,:ci))
+      else
+        @student.person_id = params.require(:student)[:person_id]
+      end
+      #se guarda el estudiante
+      @student.save!
+      #se devuelve el estudiante creado
       render json: @student, status: :created, location: @student
-    else
-      render json: @student.errors, status: :unprocessable_entity
     end
+    render json: @student.errors, status: :unprocessable_entity
   end
 
   def show
@@ -53,7 +61,7 @@ class StudentsController < ApplicationController
     datos = params.require(:student).permit(:email,:password)
     user = Student.login(datos[:email], datos[:password])
     if user
-      render json: user.as_json(:only => [:id,:entry_year], \
+      render json: user.as_json(:only => [:id,:entry_year,:android_session_token], \
         include: {
           person: { :only => [:email,:ci,:names,:session_token] },
           career: { :only => [:id,:description] }
@@ -80,6 +88,6 @@ class StudentsController < ApplicationController
     end
 
     def student_params
-      params.require(:student).permit(:person_id,:entry_year,:career_id)
+      params.require(:student).permit(:entry_year,:career_id)
     end
 end

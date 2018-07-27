@@ -1,5 +1,6 @@
 class Subject < ApplicationRecord
   belongs_to :professor, optional: true
+  belongs_to :career
   has_many :takens
 
   def as_json(options={})

@@ -35,7 +35,6 @@ class Subject < ApplicationRecord
           person: { :only => [:names,:ci] }
         }
       ).merge({ "notes" => taken.notes.as_json})
->>>>>>> b57fa50226e1cb4797e8e4a773e45e1e96ff79b2
     end
   end
 

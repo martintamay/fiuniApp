@@ -28,6 +28,13 @@ class StudentsController < ApplicationController
       end
     end
   end
+  def notesFrom
+    student= Student.find_by_id(params[:id])
+    if(student)
+      fechaBuscar=params[:init_date]
+      render json: student.notesFrom(fechaBuscar)
+    end
+  end
 
   def destroy
     student = Student.find_by_id(params[:id])

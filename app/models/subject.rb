@@ -9,7 +9,7 @@ class Subject < ApplicationRecord
       options[:only] = [:id,:name,:semester]
     end
     if(!options[:include])
-      options[:include] = [
+      options[:include] = {
         professor: {
           only: :id,
           include: {
@@ -17,8 +17,11 @@ class Subject < ApplicationRecord
               only: [:id,:names]
             }
           }
+        },
+        career: {
+          only: :id
         }
-      ]
+      }
     end
 
     #se genera el json

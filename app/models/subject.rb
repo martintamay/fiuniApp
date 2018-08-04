@@ -4,14 +4,6 @@ class Subject < ApplicationRecord
   has_many :takens
 
   def as_json(options={})
-<<<<<<< HEAD
-    if(options[:only]==nil)
-      super(:only => [:id,:name,:semester], include: {
-        professor: { only: [], include:{ person:{only: [:names, :email, :ci]}}}
-        })
-    else
-      super(options)
-=======
     #si no especificó un only se usa el siguiente
     if(!options[:only])
       options[:only] = [:id,:name,:semester]

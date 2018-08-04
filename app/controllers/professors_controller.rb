@@ -1,43 +1,42 @@
 class ProfessorsController < ApplicationController
+  before_action :set_professor, only: [:show, :update, :destroy]
+
   def index
     professors = Professor.all
-    respond_to do |format|
-      format.json { render json: professors }
-    end
+    render json: professors
   end
 
   def update
-    professor = Professor.find_by_id(params[:id])
-    if(professor)
-      professor.update(professor_params)
-      redirect_to professor_path(professor, format: :json)
+    if @professor.update(professor_params)
+      render json: @professor
+    else
+      render json: @professor.errors, status: :unprocessable_entity
     end
   end
 
   def create
-    professor = Professor.new(professor_params)
-    professor.save
-    redirect_to professor_path(professor, format: :json)
+    @professor = Professor.new(professor_params)
+
+    if @professor.save
+      render json: @professor, status: :created, location: @professor
+    else
+      render json: @professor.errors, status: :unprocessable_entity
+    end
   end
 
   def show
-    professor = Professor.find_by_id(params[:id])
-    if(professor)
-      respond_to do |format|
-        format.json { render json: professor }
-      end
-    end
+    render json: @professor
   end
 
   def destroy
-    professor = Professor.find_by_id(params[:id])
-    if(professor)
-      professor.destroy
-      render json: {}, status: :no_content
-    end
+    @professor.destroy
   end
 
   private
+    def set_professor
+      @professor = Professor.find(params[:id])
+    end
+
     def professor_params
       params.require(:professor).permit(:person_id)
     end

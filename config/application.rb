@@ -10,6 +10,15 @@ module FiuniApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
+    config.api_only = true
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '/people/log_in', headers: :any, methods: [:get, :put, :patch, :delete, :post, :options]
+        resource '*', headers: :any, methods: [:get, :put, :patch, :delete, :post, :options]
+      end
+    end
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

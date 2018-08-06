@@ -2,7 +2,6 @@ require 'securerandom'
 
 class Person < ApplicationRecord
   validates_uniqueness_of :email
-  validates_uniqueness_of :ci
   before_save :encrypt_password
 
   def as_json(options={})

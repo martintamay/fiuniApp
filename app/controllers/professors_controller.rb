@@ -7,20 +7,29 @@ class ProfessorsController < ApplicationController
   end
 
   def update
-    if @professor.update(professor_params)
+    @person = @professor.person
+    person_params = professor_params[:person].permit(:names,:ci,:email,:password)
+    if @person.update(person_params)
       render json: @professor
     else
-      render json: @professor.errors, status: :unprocessable_entity
+      render json: @person.errors, status: :unprocessable_entity
     end
   end
 
   def create
-    @professor = Professor.new(professor_params)
-
-    if @professor.save
-      render json: @professor, status: :created, location: @professor
-    else
-      render json: @professor.errors, status: :unprocessable_entity
+    @professor = Professor.new
+    Professor.transaction do
+      begin
+        logger.info(JSON.generate(params[:professor][:person]))
+        person_data = params[:professor][:person].permit(:ci,:email,:names,:password)
+        person = Person.new(person_data)
+        person.save!
+        @professor.person = person
+        @professor.save!
+        render json: @professor, status: :created, location: @professor
+      rescue ActiveRecord::StatementInvalid
+        render json: @professor.errors , status: :unprocessable_entity
+      end
     end
   end
 
@@ -38,6 +47,6 @@ class ProfessorsController < ApplicationController
     end
 
     def professor_params
-      params.require(:professor).permit(:person_id)
+      params.require(:professor)
     end
 end

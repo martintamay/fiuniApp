@@ -37,7 +37,7 @@ class TakensController < ApplicationController
       @taken = Taken.find(params[:id])
     end
 
-    def career_params
-      params.require(:taken).permit(:description)
+    def taken_params
+      params.require(:taken).permit(:student_id,:subject_id,:inscription_date)
     end
 end

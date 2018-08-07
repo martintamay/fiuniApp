@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       end
     end
     resources :professors, only: [:index,:show,:destroy,:create,:update] do
-      resources :subjects, only: [:index]
+      get '/subjects', to: 'professors#subjects'
     end
     resources :students, only: [:index,:show,:destroy,:create,:update] do
       get '/notes/last/:last_date/:last_time', to: 'students#lastNotes'
@@ -39,7 +39,10 @@ Rails.application.routes.draw do
       get '/notes/from/:init_date/to/:end_date', to: 'subjects#notesBetween'
       get '/notes/from/:init_date', to: 'subjects#notesFrom'
       get '/notes', to: 'subjects#notes'
+      get '/notes/unfinished', to: 'subjects#unfinished_notes'
+      get '/notes/taken/from-year/:year', to: 'subjects#notes_of_year'
       get '/students', to: 'subjects#activeStudents'
+      get '/examinations', to: 'subjects#examinations'
       collection do
         get '/uncheckeds', to: 'subjects#uncheckedNotes'
         get '/semester/:semester_number', to: 'subjects#fromSemester'

@@ -1,5 +1,5 @@
 class ProfessorsController < ApplicationController
-  before_action :set_professor, only: [:show, :update, :destroy]
+  before_action :set_professor, only: [:show, :update, :destroy, :subjects]
 
   def index
     professors = Professor.all
@@ -33,6 +33,14 @@ class ProfessorsController < ApplicationController
     end
   end
 
+  def subjects
+    subjects = @professor.subjects
+    render json: subjects.as_json({
+        only: [:id,:name,:semester,:career_id],
+        include: []
+    })
+  end
+
   def show
     render json: @professor
   end
@@ -43,7 +51,11 @@ class ProfessorsController < ApplicationController
 
   private
     def set_professor
-      @professor = Professor.find(params[:id])
+      if params[:id]
+        @professor = Professor.find(params[:id])
+      else
+        @professor = Professor.find(params[:professor_id])
+      end
     end
 
     def professor_params

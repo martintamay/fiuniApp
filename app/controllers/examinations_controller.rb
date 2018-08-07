@@ -1,4 +1,5 @@
 class ExaminationsController < ApplicationController
+  before_action :set_examination, only: [:show, :update, :destroy]
   def index
     examinations = Examination.all
     render json: examinations

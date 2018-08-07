@@ -1,7 +1,7 @@
 class CreateTakens < ActiveRecord::Migration[5.1]
   def change
     create_table :takens do |t|
-      t.date :inscriptionDate
+      t.date :inscription_date
       t.integer :finished
       t.date :finish_date
       t.references :student, foreign_key: true

@@ -9,7 +9,14 @@ class Examination < ApplicationRecord
     if !options[:include]
 
       options[:include] = {
-        subject: { only: :id },
+        subject: {
+          only: :id,
+          include: {
+            career: {
+              only: :id
+            }
+          }
+        },
         notes: {
           only: [:id,:type,:opportunity,:score,:percentage,:checked],
           methods: [:student]

@@ -4,10 +4,21 @@ class Taken < ApplicationRecord
   has_many :notes
 
   def as_json(options={})
-    if(options[:only]==nil)
-      super(:only => [:id,:student,:subject,:inscription,:finished,:finish_date])
-    else
-      super(options)
+    if(!options[:only])
+      options[:only] = [:id,:subject_id,:inscription_date,:finished,:finish_date]
     end
+    if(!options[:include])
+      options[:include] = {
+        student: {
+          only: :id,
+          include: {
+            person: {
+              only: [:id,:names,:ci]
+            }
+          }
+        }
+      }
+    end
+    super(options)
   end
 end

@@ -28,12 +28,20 @@ class StudentsController < ApplicationController
       @student.save!
       #se devuelve el estudiante creado
       render json: @student, status: :created, location: @student
+    rescue ActiveRecord::StatementInvalid
+      render json: @student.errors, status: :unprocessable_entity
     end
-    render json: @student.errors, status: :unprocessable_entity
   end
 
   def show
     render json: @student
+  end
+  def notesFrom
+    student= Student.find_by_id(params[:id])
+    if(student)
+      fechaBuscar=params[:init_date]
+      render json: student.notesFrom(fechaBuscar)
+    end
   end
 
   def destroy

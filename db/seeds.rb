@@ -120,28 +120,28 @@ subjects = Subject.create([
 takens = Taken.create([
   #martin
   {
-    inscriptionDate: "2014-07-29",
+    inscription_date: "2014-07-29",
     finished: 1,
     finish_date: "2018-12-23",
     student: students[0],
     subject: subjects[0]
   },
   {
-    inscriptionDate: "2014-07-29",
+    inscription_date: "2014-07-29",
     finished: 0,
     finish_date: "2018-12-20",
     student: students[0],
     subject: subjects[3]
   },
   {
-    inscriptionDate: "2015-02-27",
+    inscription_date: "2015-02-27",
     finished: 0,
     finish_date: nil,
     student: students[0],
     subject: subjects[1]
   },
   {
-    inscriptionDate: "2015-02-27",
+    inscription_date: "2015-02-27",
     finished: 0,
     finish_date: nil,
     student: students[0],
@@ -149,32 +149,60 @@ takens = Taken.create([
   },
   #deysi
   {
-    inscriptionDate: "2013-07-26",
+    inscription_date: "2013-07-26",
     finished: 0,
     finish_date: "2013-12-15",
     student: students[1],
     subject: subjects[0]
   },
   {
-    inscriptionDate: "2013-07-26",
+    inscription_date: "2013-07-26",
     finished: 0,
     finish_date: "2013-12-20",
     student: students[1],
     subject: subjects[3]
   },
   {
-    inscriptionDate: "2014-02-27",
+    inscription_date: "2014-02-27",
     finished: 0,
     finish_date: nil,
     student: students[0],
     subject: subjects[1]
   },
   {
-    inscriptionDate: "2014-02-27",
+    inscription_date: "2014-02-27",
     finished: 0,
     finish_date: nil,
     student: students[0],
     subject: subjects[4]
+  },
+  {
+    inscription_date: "2018-02-23",
+    finished: 0,
+    finish_date: nil,
+    student: students[0],
+    subject: subjects[1]
+  },
+  {
+    inscription_date: "2018-02-23",
+    finished: 0,
+    finish_date: nil,
+    student: students[1],
+    subject: subjects[1]
+  },
+  {
+    inscription_date: "2018-02-24",
+    finished: 0,
+    finish_date: nil,
+    student: students[0],
+    subject: subjects[2]
+  },
+  {
+    inscription_date: "2018-02-24",
+    finished: 0,
+    finish_date: nil,
+    student: students[1],
+    subject: subjects[2]
   }
 ])
 examinations = Examination.create([

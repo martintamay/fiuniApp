@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(version: 20180727200021) do
   end
 
   create_table "takens", force: :cascade do |t|
-    t.date "inscriptionDate"
+    t.date "inscription_date"
     t.integer "finished"
     t.date "finish_date"
     t.integer "student_id"

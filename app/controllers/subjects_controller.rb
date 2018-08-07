@@ -1,5 +1,5 @@
 class SubjectsController < ApplicationController
-  before_action :set_subject, only: [:show, :update, :destroy, :notes]
+  before_action :set_subject, only: [:show, :update, :destroy, :notes, :examinations, :unfinished_notes, :notes_of_year]
 
   def index
     subjects = Subject.all
@@ -32,11 +32,33 @@ class SubjectsController < ApplicationController
     @subject.destroy
   end
 
+  def examinations
+    render json: @subject.examinations
+  end
+
   def notes
     if(@subject)
       render json: @subject.notes
     else
       render json: {}, status: :not_found
+    end
+  end
+
+  def unfinished_notes
+    year = params[:year]
+    if(@subject)
+      render json: @subject.notes_from_year(year)
+    else
+      render json: {}, status: :not_found
+    end
+  end
+
+  def notes_of_year
+    year = params[:year]
+    if(@subject)
+      render json: @subject.notes_from_year(year)
+    else
+      render json: [], status: :not_found
     end
   end
 
@@ -50,6 +72,6 @@ class SubjectsController < ApplicationController
     end
 
     def subject_params
-      params.require(:subject).permit(:name, :semester, :professor_id)
+      params.require(:subject).permit(:name,:semester,:career_id)
     end
 end

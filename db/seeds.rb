@@ -255,7 +255,6 @@ notes = Note.create([
     score: "4",
     approved: 1,
     percentage: 83,
-    opportunity: 1,
     taken: takens[0],
     examination: examinations[0]
   },
@@ -263,7 +262,6 @@ notes = Note.create([
     score: "3",
     approved: 1,
     percentage: 73,
-    opportunity: 1,
     taken: takens[1],
     examination: examinations[1]
   },
@@ -271,7 +269,6 @@ notes = Note.create([
     score: "5",
     approved: 1,
     percentage: 98,
-    opportunity: 1,
     taken: takens[4],
     examination: examinations[2]
   },
@@ -279,7 +276,6 @@ notes = Note.create([
     score: "5",
     approved: 1,
     percentage: 100,
-    opportunity: 1,
     taken: takens[5],
     examination: examinations[3]
   },
@@ -288,7 +284,6 @@ notes = Note.create([
     score: "4",
     approved: 1,
     percentage: 83,
-    opportunity: 1,
     taken: takens[0],
     examination: examinations[4]
   },
@@ -296,7 +291,6 @@ notes = Note.create([
     score: "3",
     approved: 1,
     percentage: 73,
-    opportunity: 1,
     taken: takens[1],
     examination: examinations[5]
   },
@@ -304,7 +298,6 @@ notes = Note.create([
     score: "5",
     approved: 1,
     percentage: 98,
-    opportunity: 1,
     taken: takens[4],
     examination: examinations[6]
   },
@@ -312,7 +305,6 @@ notes = Note.create([
     score: "5",
     approved: 1,
     percentage: 100,
-    opportunity: 1,
     taken: takens[5],
     examination: examinations[7]
   }

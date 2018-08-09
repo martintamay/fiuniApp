@@ -2,10 +2,10 @@
 # para que se puedan corregir notas cargadas erroneamente
 
 class Note < ApplicationRecord
-  before_save :set_note
-  after_save :check_finished
   belongs_to :taken
   belongs_to :examination
+  before_save :set_note
+  after_save :check_finished
 
   after_initialize :init
 
@@ -85,13 +85,7 @@ class Note < ApplicationRecord
 
     #se setea la oportunidad la correcta
     if !self.opportunity
-      lastOpportunity = self.taken.notes.joins(:examination).where(
-        {
-          examinations: {
-            examination_type: self.examination.examination_type
-          }
-        }
-      ).maximum('opportunity')
+      lastOpportunity = Note.where("taken_id = ?", self.taken_id).maximum('opportunity')
       self.opportunity = lastOpportunity ? lastOpportunity+1 : 1
     end
   end

@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       get '/notes/taken/from-year/:year', to: 'subjects#notes_of_year'
       get '/students', to: 'subjects#activeStudents'
       get '/examinations', to: 'subjects#examinations'
+      post '/takens', to: 'takens#bulk_inscription'
       collection do
         get '/uncheckeds', to: 'subjects#uncheckedNotes'
         get '/semester/:semester_number', to: 'subjects#fromSemester'
@@ -58,6 +59,7 @@ Rails.application.routes.draw do
       collection do
         get '/from/:init_date/to/:end_date', to: 'takens#betweenDates'
         get '/from/:init_date', to: 'takens#fromDate'
+        post '/bulk-create', to: 'takens#bulk_inscription'
       end
       resources :notes, only: [:index]
     end

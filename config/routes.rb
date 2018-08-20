@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       get '/notes', to: 'students#notes'
       get '/subjects/actives', to: 'students#activeSubjects'
       get '/subjects', to: 'students#subjects'
+      post '/takens', to: 'takens#bulk_inscription'
 
       collection do
         put '/log_in', to: 'students#logIn'
@@ -43,7 +44,6 @@ Rails.application.routes.draw do
       get '/notes/taken/from-year/:year', to: 'subjects#notes_of_year'
       get '/students', to: 'subjects#activeStudents'
       get '/examinations', to: 'subjects#examinations'
-      post '/takens', to: 'takens#bulk_inscription'
       collection do
         get '/uncheckeds', to: 'subjects#uncheckedNotes'
         get '/semester/:semester_number', to: 'subjects#fromSemester'

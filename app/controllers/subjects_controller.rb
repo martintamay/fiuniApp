@@ -1,5 +1,7 @@
 class SubjectsController < ApplicationController
+  before_action :authenticate
   before_action :set_subject, only: [:show, :update, :destroy, :notes, :examinations, :unfinished_notes, :notes_of_year]
+  before_action :check_access, only: [:update, :notes, :unfinished_notes, :notes_of_year]
 
   def index
     subjects = Subject.all
@@ -15,6 +17,9 @@ class SubjectsController < ApplicationController
   end
 
   def create
+    if !@user.is_administrator
+      return render plain: "unauthorized", status: :unauthorized
+    end
     @subject = Subject.new(subject_params)
 
     if @subject.save
@@ -29,6 +34,9 @@ class SubjectsController < ApplicationController
   end
 
   def destroy
+    if !@user.is_administrator
+      return render plain: "unauthorized", status: :unauthorized
+    end
     @subject.destroy
   end
 
@@ -73,5 +81,11 @@ class SubjectsController < ApplicationController
 
     def subject_params
       params.require(:subject).permit(:name,:semester,:career_id)
+    end
+
+    def check_access
+      if !(@user.is_administrator || (@user.is_professor && @subject.professor != @user.professor))
+        render plain: "unauthorized", status: :unauthorized
+      end
     end
 end

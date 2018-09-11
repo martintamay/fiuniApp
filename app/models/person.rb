@@ -31,6 +31,17 @@ class Person < ApplicationRecord
     ad.as_json :only => [:id,:entry_year]
   end
 
+  def is_student
+    return self.student != nil
+  end
+  def is_professor
+    return self.professor != nil
+  end
+  def is_administrator
+    return self.administrator != nil
+  end
+
+
   def generateSessionToken
     date = Time.now.strftime("%d%m%Y%R")
     password = self.password

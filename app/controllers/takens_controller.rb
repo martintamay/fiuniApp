@@ -13,6 +13,20 @@ class TakensController < ApplicationController
       render json: @taken.errors, status: :unprocessable_entity
     end
   end
+  def bulk_inscription
+    Taken.transaction do
+      student_id= params.require(:student_id)
+      subjects_id= params.require(:subjects_id)
+      subjects_id.each do |id|
+        Taken.create([{
+          inscription_date: DateTime.now,
+          finished:0,
+          finish_date: nil,
+          student_id: student_id,
+          subject_id:id }])
+      end
+    end
+  end
 
   def create
     @taken = Taken.new(taken_params)

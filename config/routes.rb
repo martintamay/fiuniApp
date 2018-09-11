@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       get '/notes', to: 'students#notes'
       get '/subjects/actives', to: 'students#activeSubjects'
       get '/subjects', to: 'students#subjects'
+      post '/takens', to: 'takens#bulk_inscription'
 
       collection do
         put '/log_in', to: 'students#logIn'

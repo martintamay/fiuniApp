@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       get '/students', to: 'subjects#activeStudents'
       get '/examinations', to: 'subjects#examinations'
       post '/takens', to: 'takens#bulk_inscription'
+      put '/set-professor', to: 'subjects#set_profesor'
       collection do
         get '/uncheckeds', to: 'subjects#uncheckedNotes'
         get '/semester/:semester_number', to: 'subjects#fromSemester'

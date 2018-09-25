@@ -1,5 +1,8 @@
 class PeopleController < ApplicationController
+  before_action :authenticate, except: [:reLogIn, :logIn]
   before_action :set_person, only: [:show, :update, :destroy]
+  before_action :check_access, only: [:index, :destroy, :create]
+  before_action :check_access_or_owner, only: [:update, :show]
 
   def index
     people = Person.all
@@ -66,4 +69,17 @@ class PeopleController < ApplicationController
     def person_params
       params.require(:person).permit(:names, :email, :password, :ci)
     end
+
+    def check_access
+      if(!@user.is_administrator)
+        return_unauthorized
+      end
+    end
+
+    def check_access_or_owner
+      if !(@user.is_administrator || @user = @person)
+        return_unauthorized
+      end
+    end
+
 end

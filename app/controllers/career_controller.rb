@@ -1,5 +1,7 @@
 class CareerController < ApplicationController
+  before_action :authenticate
   before_action :set_career, only: [:show, :update, :destroy]
+  before_action :check_access, only: [:update, :destroy, :create]
 
   def index
     careers = Career.all
@@ -39,5 +41,11 @@ class CareerController < ApplicationController
 
     def career_params
       params.require(:career).permit(:description)
+    end
+
+    def check_access
+      if(!@user.is_administrator)
+        return_unauthorized
+      end
     end
 end

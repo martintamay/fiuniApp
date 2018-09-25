@@ -1,5 +1,9 @@
 class StudentsController < ApplicationController
+  before_action :authenticate, except: [:logIn, :create]
   before_action :set_student, only: [:show, :update, :destroy, :notes, :subjects, :lastNotes]
+  before_action :check_access, only: [:show]
+  before_action :check_admin, only: [:destroy,:index]
+  before_action :check_access_or_owner, only: [:update,:notesFrom,:subjects,:lastNotes,:notes]
 
   def index
     students = Student.all
@@ -98,4 +102,22 @@ class StudentsController < ApplicationController
     def student_params
       params.require(:student).permit(:entry_year,:career_id)
     end
+
+    def check_access
+      if !(@user.is_administrator || (@user.is_student == @student) || @user.is_professor)
+        return_unauthorized
+      end
+    end
+
+    def check_admin
+      if !@user.is_administrator
+        return_unauthorized
+      end
+    end
+
+    def check_access_or_owner
+      if !(@user.is_administrator || (@user.is_student && @user.is_student == @student))
+       return_unauthorized
+     end
+   end
 end

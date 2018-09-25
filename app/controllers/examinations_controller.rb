@@ -31,7 +31,6 @@ class ExaminationsController < ApplicationController
     @examination.destroy
   end
 
-
   def uncheckeds
     @examinations = Examination.joins(:notes).where(notes: { checked: 0 })
     render json: @examinations

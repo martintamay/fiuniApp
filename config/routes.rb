@@ -25,6 +25,9 @@ Rails.application.routes.draw do
       get '/notes', to: 'students#notes'
       get '/subjects/actives', to: 'students#activeSubjects'
       get '/subjects', to: 'students#subjects'
+      get '/available_examinations', to: 'students#available_examinations'
+      get '/examination_inscriptions', to: 'students#examination_inscriptions'
+
       post '/takens', to: 'takens#bulk_inscription'
 
       collection do
@@ -44,8 +47,9 @@ Rails.application.routes.draw do
       get '/notes/taken/from-year/:year', to: 'subjects#notes_of_year'
       get '/students', to: 'subjects#activeStudents'
       get '/examinations', to: 'subjects#examinations'
-      post '/takens', to: 'takens#bulk_inscription'
+      get '/examination-inscriptions', to: 'subjects#examination_inscriptions'
       put '/set-professor', to: 'subjects#set_profesor'
+      post '/takens', to: 'takens#bulk_inscription'
       collection do
         get '/uncheckeds', to: 'subjects#uncheckedNotes'
         get '/semester/:semester_number', to: 'subjects#fromSemester'
@@ -74,6 +78,11 @@ Rails.application.routes.draw do
         get '/to-approve/academic', to: 'notes#toAproveAcademic'
         get '/to-approve/secretary', to: 'notes#toAproveSecretary'
         get '/to-approve', to: 'notes#toAprove'
+      end
+    end
+    resources :examination_inscriptions, only: [:index,:show,:destroy,:create,:update] do
+      collection do
+        get '/uncheckeds', to: 'examination_inscriptions#uncheckeds'
       end
     end
   end

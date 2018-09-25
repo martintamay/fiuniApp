@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180727200021) do
+ActiveRecord::Schema.define(version: 20180911184602) do
 
   create_table "administrators", force: :cascade do |t|
     t.integer "person_id"
@@ -23,6 +23,17 @@ ActiveRecord::Schema.define(version: 20180727200021) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "examination_inscriptions", force: :cascade do |t|
+    t.integer "approved"
+    t.date "inscription_date"
+    t.integer "examination_id"
+    t.integer "taken_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["examination_id"], name: "index_examination_inscriptions_on_examination_id"
+    t.index ["taken_id"], name: "index_examination_inscriptions_on_taken_id"
   end
 
   create_table "examinations", force: :cascade do |t|
@@ -38,14 +49,12 @@ ActiveRecord::Schema.define(version: 20180727200021) do
     t.integer "score"
     t.integer "approved"
     t.integer "percentage"
-    t.integer "taken_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "opportunity"
     t.integer "checked"
-    t.integer "examination_id"
-    t.index ["examination_id"], name: "index_notes_on_examination_id"
-    t.index ["taken_id"], name: "index_notes_on_taken_id"
+    t.integer "examination_inscription_id"
+    t.index ["examination_inscription_id"], name: "index_notes_on_examination_inscription_id"
   end
 
   create_table "people", force: :cascade do |t|

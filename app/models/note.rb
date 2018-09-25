@@ -2,8 +2,10 @@
 # para que se puedan corregir notas cargadas erroneamente
 
 class Note < ApplicationRecord
-  belongs_to :taken
-  belongs_to :examination
+  belongs_to :examination_inscription
+  has_one :taken, through: :examination_inscription
+  has_one :examination, through: :examination_inscription
+
   before_save :set_note
   after_save :check_finished
 
@@ -16,15 +18,20 @@ class Note < ApplicationRecord
     if(!options[:include])
       options[:include] = {
         examination: {
-          only: [:id,:examination_date,:examination_type],
-          include: { subject: { only: :id } }
+          only: [:id,:examination_date,:examination_type]
         }
       }
     end
     if(!options[:methods])
       options[:methods] = [:student]
     end
-    super(options)
+    generated = super(options)
+    generated[:subject] = self.subject.as_json({ only: [:id], include: [] })
+    return generated
+  end
+
+  def subject
+    self.taken.subject
   end
 
   def student
@@ -42,6 +49,14 @@ class Note < ApplicationRecord
       self.score = 4
     else
       self.score = 5
+    end
+
+    #se setea la oportunidad la correcta
+    if !self.opportunity
+      lastOpportunity = Note.joins(:examination_inscription).where(
+        "examination_inscriptions.taken_id = ?", self.taken.id
+      ).maximum('opportunity')
+      self.opportunity = lastOpportunity ? lastOpportunity+1 : 1
     end
   end
 
@@ -81,12 +96,6 @@ class Note < ApplicationRecord
     #se marca como sin revisar
     if !self.checked
       self.checked = 0
-    end
-
-    #se setea la oportunidad la correcta
-    if !self.opportunity
-      lastOpportunity = Note.where("taken_id = ?", self.taken_id).maximum('opportunity')
-      self.opportunity = lastOpportunity ? lastOpportunity+1 : 1
     end
   end
 end

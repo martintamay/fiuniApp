@@ -249,63 +249,109 @@ examinations = Examination.create([
     subject: takens[5].subject
   }
 ])
+
+examinationInscriptions = ExaminationInscription.create([
+  #pp
+  {
+    inscription_date: "2018-01-01",
+    approved: 1,
+    taken: takens[0],
+    examination: examinations[0]
+  },
+  {
+    inscription_date: "2018-01-01",
+    approved: 1,
+    taken: takens[1],
+    examination: examinations[1]
+  },
+  {
+    inscription_date: "2018-01-01",
+    approved: 1,
+    taken: takens[4],
+    examination: examinations[2]
+  },
+  {
+    inscription_date: "2018-01-01",
+    approved: 1,
+    taken: takens[5],
+    examination: examinations[3]
+  },
+  #finales
+  {
+    inscription_date: "2018-01-01",
+    approved: 1,
+    taken: takens[0],
+    examination: examinations[4]
+  },
+  {
+    inscription_date: "2018-01-01",
+    approved: 1,
+    taken: takens[1],
+    examination: examinations[5]
+  },
+  {
+    inscription_date: "2018-01-01",
+    approved: 1,
+    taken: takens[4],
+    examination: examinations[6]
+  },
+  {
+    inscription_date: "2018-01-01",
+    approved: 1,
+    taken: takens[5],
+    examination: examinations[7]
+  }
+]);
+
 notes = Note.create([
   #pp
   {
     score: "4",
     approved: 1,
     percentage: 83,
-    taken: takens[0],
-    examination: examinations[0]
+    examination_inscription: examinationInscriptions[0]
   },
   {
     score: "3",
     approved: 1,
     percentage: 73,
-    taken: takens[1],
-    examination: examinations[1]
+    examination_inscription: examinationInscriptions[1]
   },
   {
     score: "5",
     approved: 1,
     percentage: 98,
-    taken: takens[4],
-    examination: examinations[2]
+    examination_inscription: examinationInscriptions[2]
   },
   {
     score: "5",
     approved: 1,
     percentage: 100,
-    taken: takens[5],
-    examination: examinations[3]
+    examination_inscription: examinationInscriptions[3]
   },
   #finales
   {
     score: "4",
     approved: 1,
     percentage: 83,
-    taken: takens[0],
-    examination: examinations[4]
+    examination_inscription: examinationInscriptions[4]
   },
   {
     score: "3",
     approved: 1,
     percentage: 73,
-    taken: takens[1],
-    examination: examinations[5]
+    examination_inscription: examinationInscriptions[5]
   },
   {
     score: "5",
     approved: 1,
     percentage: 98,
-    taken: takens[4],
-    examination: examinations[6]
+    examination_inscription: examinationInscriptions[6]
   },
   {
     score: "5",
     approved: 1,
     percentage: 100,
-    taken: takens[5],
-    examination: examinations[7]
+    examination_inscription: examinationInscriptions[7]
   }
 ])

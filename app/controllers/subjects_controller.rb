@@ -1,6 +1,6 @@
 class SubjectsController < ApplicationController
   before_action :authenticate
-  before_action :set_subject, only: [:show, :update, :destroy, :notes, :examinations, :unfinished_notes, :notes_of_year, :set_profesor]
+  before_action :set_subject, only: [:show, :update, :destroy, :notes, :examinations, :unfinished_notes, :notes_of_year, :set_profesor, :examination_inscriptions]
   before_action :check_access, only: [:update, :notes, :unfinished_notes, :notes_of_year]
 
   def index
@@ -39,6 +39,21 @@ class SubjectsController < ApplicationController
     end
     @subject.destroy
   end
+
+  def examination_inscriptions
+    conditions = { takens: { subject: @subject } }
+    if params.has_key? :uncheckeds
+      conditions[:approved] = 3
+    end
+    if params.has_key? :state
+      conditions[:approved] = params[:state]
+    end
+
+    @examination_inscriptions = ExaminationInscription.joins(:taken).where(conditions)
+
+    render json: @examination_inscriptions
+  end
+
 
   def set_profesor
     @subject.professor_id = params.require(:professor_id)

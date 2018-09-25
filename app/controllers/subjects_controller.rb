@@ -1,6 +1,6 @@
 class SubjectsController < ApplicationController
   before_action :authenticate
-  before_action :set_subject, only: [:show, :update, :destroy, :notes, :examinations, :unfinished_notes, :notes_of_year]
+  before_action :set_subject, only: [:show, :update, :destroy, :notes, :examinations, :unfinished_notes, :notes_of_year, :set_profesor]
   before_action :check_access, only: [:update, :notes, :unfinished_notes, :notes_of_year]
 
   def index
@@ -38,6 +38,19 @@ class SubjectsController < ApplicationController
       return render plain: "unauthorized", status: :unauthorized
     end
     @subject.destroy
+  end
+
+  def set_profesor
+    @subject.professor_id = params.require(:professor_id)
+    if @subject.save
+      render json: @subject.as_json({
+        :only => [:id, :name, :semester, :career_id],
+        :methods => [],
+        :include => []
+      })
+    else
+      render json: @subject.errors, status: :unprocessable_entity
+    end
   end
 
   def examinations

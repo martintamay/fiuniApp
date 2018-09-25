@@ -22,7 +22,7 @@ class ProfessorsController < ApplicationController
   def create
     @professor = Professor.new
     Professor.transaction do
-      logger.info(JSON.generate(params[:professor][:person]))
+      #logger.info(JSON.generate(params[:professor][:person]))
       person_data = params[:professor][:person].permit(:ci,:email,:names,:password)
       person = Person.new(person_data)
       person.save!

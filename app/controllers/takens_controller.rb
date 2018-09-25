@@ -1,5 +1,8 @@
 class TakensController < ApplicationController
+  before_action :authenticate
   before_action :set_taken, only: [:show, :update, :destroy]
+  before_action :check_access, only: [:index, :update, :destroy]
+  before_action :check_access_or_owner, only: [:show, :create]
 
   def index
     takens = Taken.all
@@ -53,5 +56,17 @@ class TakensController < ApplicationController
 
     def taken_params
       params.require(:taken).permit(:student_id,:subject_id,:inscription_date)
+    end
+
+    def check_access
+      if !@user.is_administrator
+        return_unauthorized
+      end
+    end
+
+    def check_access_or_owner
+      if !(@user.is_administrator || (@user.is_student && @taken.is_student == @user.student))
+        return_unauthorized
+      end
     end
 end

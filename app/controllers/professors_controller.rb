@@ -1,5 +1,8 @@
 class ProfessorsController < ApplicationController
+  before_action :authenticate
   before_action :set_professor, only: [:show, :update, :destroy, :subjects]
+  before_action :check_access, only: [:index, :create, :destroy]
+  before_action :check_access_or_owner, only: [:update, :subjects]
 
   def index
     professors = Professor.all
@@ -58,5 +61,17 @@ class ProfessorsController < ApplicationController
 
     def professor_params
       params.require(:professor)
+    end
+
+    def check_access
+      if !@user.is_administrator
+        return_unauthorized
+      end
+    end
+
+    def check_access_or_owner
+      if !(@user.is_administrator || (@user.is_professor && @professor != @user.is_professor))
+        return_unauthorized
+      end
     end
 end

@@ -1,5 +1,7 @@
 class AdministratorsController < ApplicationController
+  before_action :authenticate
   before_action :set_administrator, only: [:show, :update, :destroy]
+  before_action :check_access
 
   def index
     administradors = Administrator.all
@@ -38,5 +40,11 @@ class AdministratorsController < ApplicationController
 
     def administrator_params
       params.require(:administrator).permit(:person_id)
+    end
+
+    def check_access
+      if(!@user.is_administrator)
+        return_unauthorized
+      end
     end
 end

@@ -2,6 +2,7 @@ class Student < ApplicationRecord
   belongs_to :career
   belongs_to :person
   has_many :takens
+  has_many :notes, through: :takens
 
 
   def as_json(options={})
@@ -14,16 +15,6 @@ class Student < ApplicationRecord
     else
       super(options)
     end
-  end
-
-  #métodos de objeto
-  def notes
-    takens = self.takens
-    notas = []
-    takens.each do |taken|
-      notas.concat(taken.notes)
-    end
-    return notas
   end
 
   def currentSubjects

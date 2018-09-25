@@ -1,5 +1,8 @@
 class ExaminationsController < ApplicationController
+  before_action :authenticate
   before_action :set_examination, only: [:show, :update, :destroy]
+  before_action :check_access, only: [:create, :update, :destroy, :uncheckeds]
+
   def index
     examinations = Examination.all
     render json: examinations
@@ -47,5 +50,11 @@ class ExaminationsController < ApplicationController
 
     def examination_params
       params.require(:examination).permit(:examination_date,:examination_type,:subject_id)
+    end
+
+    def check_access
+      if !(@user.is_administrator || (@user.is_professor && @examination.subject.professor != @user.is_professor))
+        return_unauthorized
+      end
     end
 end

@@ -1,5 +1,8 @@
 class NotesController < ApplicationController
+  before_action :authenticate
   before_action :set_note, only: [:show, :update, :destroy]
+  before_action :check_access, only: [:index, :update, :create, :destroy, :bulkCheck, :bulkInsert]
+  before_action :check_access_or_owner, only: [:show]
 
   def index
     notas = Note.all
@@ -68,5 +71,19 @@ class NotesController < ApplicationController
 
     def nota_params
       params.require(:note).permit(:score,:approved,:percentage,:taken_id)
+    end
+
+    def check_access
+      if !(@user.is_administrator || (@user.is_professor && @note.examination.subject.professor != @user.is_professor))
+        return_unauthorized
+      end
+    end
+
+    def check_access_or_owner
+      if !(@user.is_administrator || (@user.is_professor && @note.examination.subject.professor != @user.is_professor))
+        if !(@user.is_student && @note.taken.student == @user.is_student)
+          return_unauthorized
+        end
+      end
     end
 end

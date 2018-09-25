@@ -32,13 +32,13 @@ class Person < ApplicationRecord
   end
 
   def is_student
-    return self.student != nil
+    return Student.where("person_id = ?", self.id).take
   end
   def is_professor
-    return self.professor != nil
+    return Professor.where("person_id = ?", self.id).take
   end
   def is_administrator
-    return self.administrator != nil
+    return Administrator.where("person_id = ?", self.id).take
   end
 
 

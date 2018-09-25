@@ -40,6 +40,14 @@ class StudentsController < ApplicationController
   def show
     render json: @student
   end
+
+  def notes
+    student= Student.find_by_id(params[:id])
+    if(student)
+      render json: student.notes
+    end
+  end
+
   def notesFrom
     student= Student.find_by_id(params[:id])
     if(student)

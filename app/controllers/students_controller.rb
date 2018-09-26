@@ -1,9 +1,10 @@
 class StudentsController < ApplicationController
   before_action :authenticate, except: [:logIn, :create]
-  before_action :set_student, only: [:show, :update, :destroy, :notes, :subjects, :lastNotes, :available_examinations, :examination_inscriptions]
+  before_action :set_student, only: [:show, :update, :destroy, :notes, :subjects, :lastNotes,
+    :available_examinations, :examination_inscriptions, :active_takens]
   before_action :check_access, only: [:show]
   before_action :check_admin, only: [:destroy,:index]
-  before_action :check_access_or_owner, only: [:update,:notesFrom,:subjects,:lastNotes,:notes]
+  before_action :check_access_or_owner, only: [:update,:notesFrom,:subjects,:lastNotes,:notes,:active_takens]
 
   def index
     students = Student.all
@@ -45,15 +46,28 @@ class StudentsController < ApplicationController
     @student.destroy
   end
 
+  def active_takens
+    render json: @student.takens.where(finished: 0).as_json({
+        only:[:id],
+        include: {
+          subject: {
+            only: [:id]
+          }
+        }
+      })
+  end
 
   def available_examinations
     student_id = @student.id
     # se obtienen las materias que el alumno está cursando actualmente
-    subjects = Subject.joins(:takens).where(takens: { finished: 0, student_id: student_id }).pluck(:id)
+    subjects = Subject.joins(:takens).
+      where(takens: { finished: 0, student_id: student_id }).pluck('DISTINCT subjects.id')
     # se obtiene los examenes a los que ya se inscribió
-    inscribed = ExaminationInscription.joins(:taken).where(takens: { student_id: student_id }).pluck(:examination_id)
+    inscribed = ExaminationInscription.joins(:taken).
+      where(takens: { student_id: student_id, finished: 0 }).pluck('DISTINCT examination_id')
     # se obtienen los exámenes a los que se puede inscribir
-    examinations = Examination.where("examination_date > ?", 2.day.from_now.to_date).where.not( id: inscribed ).where(subject_id: subjects)
+    examinations = Examination.where("examination_date > ?", 2.day.from_now.to_date).
+      where.not( id: inscribed ).where(subject_id: subjects)
     #se devuelven los exámenes
     render_format = {
       only: [:id, :examination_type, :examination_date],
@@ -70,7 +84,8 @@ class StudentsController < ApplicationController
     #se traen las notas del alumno
     notes = @student.notes
     #se traen las inscripciones que todavía no tienen notas
-    examination_inscriptions = @student.examination_inscriptions.where.not(id: notes.pluck(:examination_inscription_id))
+    examination_inscriptions = @student.examination_inscriptions.
+      where.not(id: notes.pluck(:examination_inscription_id))
     #se devuelve
     render_format = {
       only: [:id, :approved, :inscription_date],

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       get '/notes/from/:init_date', to: 'students#notesFrom'
       get '/takens/from/:init_date/to/:end_date', to: 'students#takensBetween'
       get '/takens/from/:init_date', to: 'students#takensFrom'
+      get '/active-takens', to: 'students#active_takens'
       get '/notes', to: 'students#notes'
       get '/subjects/actives', to: 'students#activeSubjects'
       get '/subjects', to: 'students#subjects'

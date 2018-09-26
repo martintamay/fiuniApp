@@ -34,6 +34,7 @@ class ExaminationInscription < ApplicationRecord
   end
 
   def before_save_actions
+    self.inscription_date = DateTime.now
     if self.approved == nil
       self.approved = 3
     end

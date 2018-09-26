@@ -46,6 +46,6 @@ class ExaminationInscriptionsController < ApplicationController
     end
 
     def examination_inscription_params
-      params.require(:examination_inscription).permit(:inscription_date,:taken_id,:examination_id)
+      params.require(:examination_inscription).permit(:taken_id,:examination_id)
     end
 end

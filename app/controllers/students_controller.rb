@@ -67,14 +67,11 @@ class StudentsController < ApplicationController
   end
 
   def examination_inscriptions
-    takens = Taken.where( student: @student ).pluck( :id )
-
-  #TODO: Corregir select para que traiga los examination inscriptions con notas
-    exa_with_notes = Taken.joins( examination_inscriptions: [ :note ] ).
-      where( student_id: @student.id).
-      pluck( :examination_inscription_id )
-    examination_inscriptions = ExaminationInscription.where( taken_id: takens ).
-      where.not( id: exa_with_notes )
+    #se traen las notas del alumno
+    notes = @student.notes
+    #se traen las inscripciones que todavía no tienen notas
+    examination_inscriptions = @student.examination_inscriptions.where.not(id: notes.pluck(:examination_inscription_id))
+    #se devuelve
     render_format = {
       only: [:id, :approved, :inscription_date],
       include: [

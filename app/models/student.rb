@@ -3,6 +3,7 @@ class Student < ApplicationRecord
   belongs_to :person
   has_many :takens
   has_many :notes, through: :takens
+  has_many :examination_inscriptions, through: :takens
 
 
   def as_json(options={})

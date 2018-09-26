@@ -29,6 +29,10 @@ class ExaminationInscription < ApplicationRecord
     super(options)
   end
 
+  def has_note
+    Note.where(examination_inscription_id: self.id).any?
+  end
+
   def before_save_actions
     if self.approved == nil
       self.approved = 3

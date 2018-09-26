@@ -57,6 +57,7 @@ Rails.application.routes.draw do
       resources :takens, only: [:index]
     end
     resources :examinations, only: [:index,:show,:destroy,:create,:update] do
+      get '/notes', to: 'examinations#notes'
       collection do
         get '/uncheckeds', to: 'examinations#uncheckeds'
       end

@@ -91,15 +91,25 @@ class StudentsController < ApplicationController
     render json: examination_inscriptions.as_json( render_format )
   end
 
-  def notesFrom
-    student= Student.find_by_id(params[:id])
-    if(student)
-      fechaBuscar=params[:init_date]
-      render json: student.notesFrom(fechaBuscar)
-    end
-  end
   def subjects
     render json: @student.subjects
+  end
+
+  def notes
+    render json: @student.notes.where(checked: 1).as_json({
+        only: [:id,:opportunity,:score,:percentage],
+        includes: {
+          subject: { only: [:id], includes: [] },
+          examination: { only: [:id,:examination_type,:examination_date], includes: [] }
+        }
+      })
+  end
+
+  def notesFrom
+    if(@student)
+      fechaBuscar=params[:init_date]
+      render json: @student.notesFrom(fechaBuscar)
+    end
   end
 
   def lastNotes
@@ -127,14 +137,6 @@ class StudentsController < ApplicationController
     else
       render json: { "error" => "incorrect user" }, status: :unauthorized
     end
-  end
-
-  def notes
-    render json: Note.joins( :taken ).where( takens: { student: @student } ).as_json({
-      only: [:id,:opportunity,:approved,:score,:percentage],
-      include: [ taken: { only: [:inscription_date]}],
-      methods: []
-    })
   end
 
   private

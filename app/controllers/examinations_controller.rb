@@ -1,6 +1,6 @@
 class ExaminationsController < ApplicationController
   before_action :authenticate
-  before_action :set_examination, only: [:show, :update, :destroy]
+  before_action :set_examination, only: [:show, :update, :destroy, :notes]
   before_action :check_access, only: [:create, :update, :destroy, :uncheckeds]
 
   def index
@@ -32,6 +32,10 @@ class ExaminationsController < ApplicationController
 
   def destroy
     @examination.destroy
+  end
+
+  def notes
+    render json: @examination.notes
   end
 
   def uncheckeds

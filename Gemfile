@@ -33,6 +33,9 @@ gem 'rack-cors', require: 'rack/cors'
 #for bulk inserts
 gem 'activerecord-import'
 
+#for logIn
+#gem 'install google-api-client'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

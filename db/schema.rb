@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180911184602) do
+ActiveRecord::Schema.define(version: 20181005150616) do
 
   create_table "administrators", force: :cascade do |t|
     t.integer "person_id"
@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 20180911184602) do
     t.string "session_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "validation_hash"
+    t.boolean "validated"
   end
 
   create_table "professors", force: :cascade do |t|

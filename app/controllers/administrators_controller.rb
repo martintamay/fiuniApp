@@ -9,16 +9,23 @@ class AdministratorsController < ApplicationController
   end
 
   def create
-    @administrador = Administrator.new(administrator_params)
-    if @administrador.save
-      render json:@administrador, status: :created, location: @administrador
-    else
-      render json:@administrador.errors, status: :unprocessable_entity
+    @administrador = Administrator.new
+    Professor.transaction do
+      person_data = params[:administrator][:person].permit(:ci,:email,:names,:password)
+      person = Person.new(person_data)
+      person.save!
+      @administrador.person = person
+      @administrador.save!
+      render json: @administrador, status: :created, location: @administrador
     end
+  rescue ActiveRecord::StatementInvalid
+    render json: @administrador.errors , status: :unprocessable_entity
   end
 
   def update
-    if(@administrador.update(administrator_params))
+    @person = @administrador.person
+    person_params = professor_params[:person].permit(:names,:ci,:email,:password)
+    if @person.update(person_params)
       render json: @administrador
     else
       render json: @administrador.errors, status: :unprocessable_entity
@@ -39,7 +46,7 @@ class AdministratorsController < ApplicationController
     end
 
     def administrator_params
-      params.require(:administrator).permit(:person_id)
+      params.require(:administrator)
     end
 
     def check_access

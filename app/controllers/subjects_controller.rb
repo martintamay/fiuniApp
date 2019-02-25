@@ -112,7 +112,7 @@ class SubjectsController < ApplicationController
     end
 
     def check_access
-      if !(@user.is_administrator || (@user.is_professor && @subject.is_professor != @user.professor))
+      if !@user.is_administrator && !(@user.is_professor && @subject.professor == @user.professor)
         return_unauthorized
       end
     end

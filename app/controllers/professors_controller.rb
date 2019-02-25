@@ -70,7 +70,9 @@ class ProfessorsController < ApplicationController
     end
 
     def check_access_or_owner
-      if !(@user.is_administrator || (@user.is_professor && @professor != @user.is_professor))
+      logger.debug "\n\n"+@professor.person_id.to_s+"\n\n"
+      logger.debug "\n\n"+@user.id.to_s+"\n\n"
+      if !@user.is_administrator && !(@user.is_professor && @professor.person_id == @user.id)
         return_unauthorized
       end
     end

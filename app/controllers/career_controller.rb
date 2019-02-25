@@ -1,11 +1,10 @@
 class CareerController < ApplicationController
   before_action :authenticate
-  before_action :set_career, only: [:show, :update, :destroy]
+  before_action :set_career, only: [:show, :update, :destroy, :subjects, :students]
   before_action :check_access, only: [:update, :destroy, :create]
 
   def index
-    careers = Career.all
-    render json: careers
+    render json: Career.all
   end
 
   def update
@@ -34,9 +33,21 @@ class CareerController < ApplicationController
     @career.destroy
   end
 
+  def students
+    render json: @career.students
+  end
+
+  def subjects
+    render json: @career.subjects
+  end
+
   private
     def set_career
-      @career = Career.find(params[:id])
+      if params[:id]
+        @career = Career.find(params[:id])
+      else
+        @career = Career.find(params[:career_id])
+      end
     end
 
     def career_params

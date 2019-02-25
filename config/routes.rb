@@ -4,7 +4,8 @@ Rails.application.routes.draw do
 
   scope 'api' do
     resources :career, only: [:index,:show,:destroy,:create,:update] do
-      resources :students, only: [:index]
+      get 'subjects', to: 'career#subjects'
+      get 'students', to: 'career#students'
     end
     resources :people, only: [:index,:show,:destroy,:create,:update] do
       collection do
